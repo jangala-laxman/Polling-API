@@ -4,15 +4,24 @@ const questionRoutes = require("./routes/questionRoute");
 const optionRoutes = require('./routes/optionRouter')
 const app = express();
 const bodyParser = require("body-parser")
-mongoose.connect("mongodb://127.0.0.1:27017/polling");
-const database = mongoose.connection
 
-database.on("error", (error)=>{
-    console.log(error);
-})
-database.once("connected", () => {
-    console.log("Database connected");
-})
+const uri = "mongodb+srv://srilaxman48:L1u9c9k9y@cluster0.zwtmwnc.mongodb.net/polling?authMechanism=SCRAM-SHA-1"
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
+};
+
+connectDB();
+
 app.use(bodyParser.urlencoded({ 
     extended: true 
 }));

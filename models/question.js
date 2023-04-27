@@ -5,10 +5,10 @@ const questionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    options: [{
-        type: mongoose.Schema.Types.ObjectID, 
+    options: {
+        type: mongoose.Schema.Types.Array, 
         ref: 'Options'
-    }]
+    }
 })
 
 

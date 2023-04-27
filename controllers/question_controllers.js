@@ -15,22 +15,44 @@ const createQuestion = async(req,res)=>{
         res.status(400).json({message:error.message})
     }
 }
-
+let options = []
 const createOptions = async(req,res)=>{
     const id = req.params.id;
+    let n = 1;
+    const question = await Question.findById(req.params.id)
+    if(question.options.length == 0 ){
+        n = 1
+    }else{
+        n = question.options.length+1
+    }
     const newOptions = new Options({
+        id:n,
         text : req.body.text,
         votes : req.body.votes,
-        link_to_vote: req.body.link_to_vote,
-        question : id
+        link_to_vote: `http://localhost:3000/options/${n}/add_vote`,
     })
-    try{        
-        const que = await Question.findByIdAndUpdate({_id:id},{$push:{options:newOptions}})
-        console.log(que)
-        
-        // que.options = await Options.find({question : req.params.id})
-        const optionToSave = await newOptions.save()
-        res.status(200).json(optionToSave)
+    
+    options.push({
+        id:n,
+        text : req.body.text,
+        votes : req.body.votes,
+        link_to_vote: `http://localhost:3000/options/${n}/add_vote`,
+    })
+    try{
+        if(n<=4){            
+            const que = await Question.findByIdAndUpdate({_id:id},{$push:{
+                options:newOptions
+            }})
+            console.log(que)
+            // que.options = await Options.find({question : req.params.id})
+            const optionToSave = await newOptions.save()
+            n++;            
+            res.status(200).json(optionToSave)
+        }else{
+            res.send("options limit exceeded")
+        }
+        // const que = await Question.findByIdAndUpdate({_id:id},{$push:{options:newOptions}})
+       
     }
     catch(error){
         res.status(400).json({message:error.message})

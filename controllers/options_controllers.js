@@ -3,7 +3,7 @@ const Question = require('../models/question')
 const Options = require('../models/options')
 
 
-const deleteOption = async(res,req)=>{
+const deleteOption = async(req,res)=>{
     try{
         const id = req.params.id;        
         const option = await Options.findById(id)
@@ -25,7 +25,8 @@ const deleteOption = async(res,req)=>{
         res.send(`Option with ${option.text} has been deleted..`)
     }
     catch(error){
-        res.status(400).json({message: error.message})
+        console.log(error)
+        res.send(error)
     }
 }
 

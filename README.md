@@ -11,3 +11,6 @@ There are list of routes that mainly it works upon.
 -	/questions/:id (To view a question and it’s options)
 
 There is no front end part for this project.
+
+Here is the published link. 
+https://polling-api-k437.onrender.com
